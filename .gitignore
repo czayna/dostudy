@@ -1,0 +1,31 @@
+# Environment & Secrets
+.env
+*.env
+*.key
+
+# Dependencies
+node_modules/
+backend/node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Database files & uploads (local user data)
+database/dostudy.db
+database/uploads/
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

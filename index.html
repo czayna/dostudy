@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOSTUDY — Your calm study space</title>
+  <meta name="description" content="DOSTUDY helps working students stay organized, track a 1.35 GWA goal, and keep every subject in one calm pink space." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Main navigation">
+      <div class="brand"><span class="brand-mark">🌸</span><span class="brand-name">DOSTUDY</span></div>
+      <nav class="nav">
+        <button class="nav-item active" data-view="dashboard" id="nav-dashboard">🏠 <span>Dashboard</span></button>
+        <button class="nav-item" data-view="subjects" id="nav-subjects">📁 <span>Subjects</span></button>
+        <button class="nav-item" data-view="gwa" id="nav-gwa">🎯 <span>GWA Goal</span></button>
+        <button class="nav-item" data-view="upload" id="nav-upload">📤 <span>Upload Files</span></button>
+        <button class="nav-item disabled" disabled title="Coming in Sprint 2">📖 <span>Reviewer</span><em>soon</em></button>
+        <button class="nav-item disabled" disabled title="Coming in Sprint 2">🗂️ <span>Flashcards</span><em>soon</em></button>
+        <button class="nav-item disabled" disabled title="Coming in Sprint 3">🎙️ <span>Voice Call</span><em>soon</em></button>
+      </nav>
+      <div class="privacy-note">🔒 Private &amp; local. Nothing is sent anywhere. Your school accounts are never touched.</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 id="page-title">Hi there 🌷</h1>
+          <p id="page-sub" class="muted">You are not behind. One small step today is enough.</p>
+        </div>
+        <div class="goal-chip" id="goal-chip">Goal GWA <strong>1.35</strong></div>
+      </header>
+      <section id="view" class="view" aria-live="polite"></section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <h2 id="modal-title"></h2>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

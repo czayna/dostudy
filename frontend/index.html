@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOSTUDY — Your calm study space</title>
+  <meta name="description" content="DOSTUDY turns your lecture files into easy reviewers, flashcards, practice tests and a stress-free study schedule, built to protect a 1.35 GWA." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css?v=4" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Main navigation">
+      <div class="brand"><span class="brand-name">DOSTUDY</span></div>
+      <nav class="nav" id="nav">
+        <a class="nav-item" href="#/dashboard" data-route="dashboard" id="nav-dashboard"><span>Dashboard</span></a>
+        <a class="nav-item" href="#/subjects" data-route="subjects" id="nav-subjects"><span>Subjects</span></a>
+        <a class="nav-item" href="#/files" data-route="files" id="nav-files"><span>Upload &amp; Build</span></a>
+        <a class="nav-item" href="#/reviewer" data-route="reviewer" id="nav-reviewer"><span>Reviewer</span></a>
+        <a class="nav-item" href="#/flashcards" data-route="flashcards" id="nav-flashcards"><span>Flashcards</span></a>
+        <a class="nav-item" href="#/tests" data-route="tests" id="nav-tests"><span>Practice Tests</span></a>
+        <a class="nav-item" href="#/tutor" data-route="tutor" id="nav-tutor"><span>Tutor &amp; Voice</span></a>
+        <a class="nav-item" href="#/schedule" data-route="schedule" id="nav-schedule"><span>Schedule</span></a>
+      </nav>
+      <div class="privacy-note">Private &amp; local. Your school accounts are strictly read-only.</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 id="page-title">DOSTUDY</h1>
+          <p id="page-sub" class="muted"></p>
+        </div>
+      </header>
+      <div id="ai-banner"></div>
+      <section id="view" class="view" aria-live="polite"></section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="row spread"><h2 id="modal-title"></h2><button class="btn ghost small" id="modal-x" aria-label="Close">✕</button></div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+  <div id="toasts" aria-live="assertive"></div>
+  <script type="module" src="js/app.js?v=4"></script>
+</body>
+</html>
