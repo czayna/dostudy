@@ -1,14 +1,14 @@
 import { $, $$, closeModal, esc, loading, toast, fmt } from './ui.js?v=2';
 import { loadCore, state } from './state.js?v=2';
-import * as dashboard from './views/dashboard.js?v=4';
-import * as subjects from './views/subjects.js?v=4';
-import * as files from './views/files.js?v=4';
-import * as reviewer from './views/reviewer.js?v=4';
-import * as flashcards from './views/flashcards.js?v=4';
-import * as tests from './views/tests.js?v=4';
-import * as tutor from './views/tutor.js?v=4';
-import * as schedule from './views/schedule.js?v=4';
-import * as gwa from './views/gwa.js?v=4';
+import * as dashboard from './views/dashboard.js?v=5';
+import * as subjects from './views/subjects.js?v=5';
+import * as files from './views/files.js?v=5';
+import * as reviewer from './views/reviewer.js?v=5';
+import * as flashcards from './views/flashcards.js?v=5';
+import * as tests from './views/tests.js?v=5';
+import * as tutor from './views/tutor.js?v=5';
+import * as schedule from './views/schedule.js?v=5';
+import * as gwa from './views/gwa.js?v=5';
 
 const routes = { dashboard, subjects, files, reviewer, flashcards, tests, tutor, schedule, gwa };
 let cleanup = null; // views can return a cleanup function (e.g. stop the voice call)

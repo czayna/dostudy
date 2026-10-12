@@ -472,6 +472,7 @@ def build_test(file_id: int, count: int = 15):
         conn.close()
         raise HTTPException(status_code=404, detail="File not found")
     res = ai_service.generate_practice_test(row["text_cache"] or "", row["name"], count=count)
+    conn.execute("DELETE FROM tests WHERE file_id = ?", (file_id,))
     cur = conn.execute(
         "INSERT INTO tests(subject_id, file_id, title, questions) VALUES(?,?,?,?)",
         (row["subject_id"], file_id, res.get("title", row["name"]), json.dumps(res.get("questions", [])))

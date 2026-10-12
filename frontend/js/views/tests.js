@@ -4,13 +4,13 @@ import { state, subjectName, subjectColor } from '../state.js';
 import { percentToGrade } from '../gwa-math.js';
 
 export const meta = { title: 'Practice Tests', sub: 'Realistic questions with a plain-English reason for every option.' };
-const LEVEL = ['', '🌱 Warm-up', '📘 Standard', '🔥 Tricky'];
+const LEVEL = { 1: 'Warm-up', 2: 'Standard', 3: 'Tricky' };
 const norm = (s) => String(s).toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
 
 export async function render(root, { arg }) {
   if (arg) return take(root, Number(arg));
   const list = await get('/tests');
-  if (!list.length) { root.innerHTML = empty('📝', 'No practice tests yet. Upload a file and build one.', '<br><a class="btn" href="#/files">Upload a file</a>'); return; }
+  if (!list.length) { root.innerHTML = empty('', 'No practice tests yet. Upload a file and build one.', '<br><a class="btn" href="#/files">Upload a file</a>'); return; }
   root.innerHTML = `<div class="grid cols-2">${list.map((t) => `<div class="card subject-card" style="--accent:${subjectColor(t.subject_id)}"><span class="pill">${esc(subjectName(t.subject_id))}</span>
     <h2 style="margin:8px 0">${esc(t.title)}</h2><p class="muted">${t.questions} questions · ${t.attempts} attempt(s)${t.best != null ? ` · best ${fmt(t.best, 0)}%` : ''}</p>
     <div class="row" style="margin-top:12px"><a class="btn" href="#/tests/${t.id}">${t.attempts ? 'Try again' : 'Start'}</a><button class="btn danger small" data-del="${t.id}">Delete</button></div></div>`).join('')}</div>`;
@@ -19,26 +19,51 @@ export async function render(root, { arg }) {
 
 async function take(root, id) {
   const t = await get(`/tests/${id}`);
-  const qs = t.questions;
+  const qs = t.questions || [];
+  
+  if (!qs.length) {
+    root.innerHTML = `<div class="card empty" style="text-align:center;padding:40px">
+      <h2>No Questions Available</h2>
+      <p class="muted" style="margin:8px 0 18px">This practice exam does not have questions generated yet.</p>
+      <div class="row" style="justify-content:center">
+        ${t.file_id ? `<button class="btn" id="gen-now">Generate Questions Now</button>` : ''}
+        <a class="btn ghost" href="#/tests">Back to Tests</a>
+      </div>
+    </div>`;
+    const gen = $('#gen-now', root);
+    if (gen) {
+      gen.onclick = () => busy(gen, 'Writing questions…', async () => {
+        await post(`/files/${t.file_id}/tests`, { count: 15 });
+        toast('Questions generated!', 'good');
+        take(root, id);
+      });
+    }
+    return;
+  }
+
   let i = 0, score = 0, checked = false; const weak = new Set(); const missed = [];
 
   const check = (q, given) => {
+    if (!q) return false;
     if (q.type === 'mcq') return given === q.answer;
     if (q.type === 'tf') return given === q.answer;
     const g = norm(given); return Boolean(g) && [q.answer, ...(q.accept || [])].some((a) => norm(a) === g);
   };
 
   const draw = () => {
-    const q = qs[i]; checked = false;
-    root.innerHTML = `<div class="stack"><div class="row spread"><a href="#/tests">← Exit</a><span class="muted">Question ${i + 1} of ${qs.length} · ${LEVEL[q.level]}</span></div>
+    const q = qs[i];
+    if (!q) return;
+    checked = false;
+    const levelText = LEVEL[q.level] || 'Standard';
+    root.innerHTML = `<div class="stack"><div class="row spread"><a href="#/tests">← Exit</a><span class="muted">Question ${i + 1} of ${qs.length} · ${levelText}</span></div>
       <div class="bar"><span style="width:${(i / qs.length) * 100}%"></span></div>
       <div class="card stack"><span class="pill">${esc(q.topic || 'General')}</span><h2>${esc(q.question)}</h2><div id="ans">${answerUi(q)}</div><div id="fb"></div></div></div>`;
     wire(q);
   };
 
   const answerUi = (q) => {
-    if (q.type === 'mcq') return q.options.map((o, n) => `<button class="opt" data-o="${n}"><strong>${'ABCDEF'[n]}.</strong> ${esc(o)}</button>`).join('');
-    if (q.type === 'tf') return `<p class="muted">True or false?</p><button class="opt" data-o="true">✅ True</button><button class="opt" data-o="false">❌ False</button>`;
+    if (q.type === 'mcq') return (q.options || []).map((o, n) => `<button class="opt" data-o="${n}"><strong>${'ABCDEF'[n]}.</strong> ${esc(o)}</button>`).join('');
+    if (q.type === 'tf') return `<p class="muted">True or false?</p><button class="opt" data-o="true">True</button><button class="opt" data-o="false">False</button>`;
     return `<input id="idin" placeholder="Type your answer…" autocomplete="off" /><div class="row" style="margin-top:10px"><button class="btn" id="idgo">Check answer</button></div>`;
   };
 
